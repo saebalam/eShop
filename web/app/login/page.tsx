@@ -2,16 +2,18 @@
 
 import React, { useState } from "react";
 import { Grid, TextField, Button } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const Login = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const redirectTo = searchParams.get("redirectTo");
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     try {
-      const response = fetch("http://localhost:3002/api/auth/login", {
+      const response = await fetch("http://localhost:3002/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -20,13 +22,25 @@ const Login = () => {
           email,
           password,
         }),
+        credentials: "include",
       });
-      console.log(response);
+      const responseData = await response.json();
+      const { loggedin, token } = responseData.data;
+      if (loggedin === 1) {
+        localStorage.setItem("isLoggedIn", "true");
+        if (redirectTo) {
+          router.push(redirectTo);
+        } else {
+          router.push("/");
+        }
+      }
     } catch (error) {}
   };
   return (
     <Grid>
       <Grid className="flex !flex-col gap-4 w-1/3 items-center  m-auto mt-32">
+        <p className="text-2xl font-bold text-gray-600">Login</p>
+
         <TextField
           fullWidth
           id="email"
@@ -54,7 +68,7 @@ const Login = () => {
             Login
           </Button>
           <p
-            className="text-blue-800 text-sm text-center underline cursor-pointer"
+            className="text-blue-800 text-sm text-center mt-2 underline cursor-pointer"
             onClick={() => {
               router.push("/signup");
             }}

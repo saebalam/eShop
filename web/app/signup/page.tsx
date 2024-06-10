@@ -11,9 +11,9 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     try {
-      const response = fetch("http://localhost:3002/api/auth/signup", {
+      const response = await fetch("http://localhost:3002/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -23,18 +23,25 @@ const Signup = () => {
           email,
           password,
         }),
+        credentials: "include",
       });
+      const responseData = await response.json();
+      if (responseData?.data?.loggedin == 1) {
+        localStorage.setItem("isLoggedIn", "true");
+        router.push("/");
+      }
       console.log(response);
     } catch (error) {}
   };
   return (
     <Grid>
-      <Grid className="flex !flex-col gap-4 w-1/3 items-center  m-auto mt-32">
+      <Grid className="flex !flex-col gap-4 w-1/3 items-center m-auto mt-32">
+        <p className="text-2xl font-bold text-gray-600">Sign up</p>
         <TextField
           fullWidth
           id="username"
           name="username"
-          label="username"
+          label="Username"
           type="username"
           variant="outlined"
           value={username}
@@ -44,7 +51,7 @@ const Signup = () => {
           fullWidth
           id="email"
           name="email"
-          label="email"
+          label="Email"
           type="email"
           variant="outlined"
           value={email}
@@ -88,7 +95,7 @@ const Signup = () => {
             Signup
           </Button>
           <p
-            className="text-blue-800 text-sm text-center underline cursor-pointer"
+            className="text-blue-800 text-sm text-center mt-2 underline cursor-pointer"
             onClick={() => {
               router.push("/login");
             }}

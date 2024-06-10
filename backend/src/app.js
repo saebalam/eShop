@@ -1,21 +1,28 @@
 var express = require("express");
 const cors = require("cors");
-var dotenv = require("dotenv");
-dotenv.config();
+const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
+const { ProductRouter } = require("./modules/product/product-handler");
+const { AuthRouter } = require("./modules/auth/auth-handlers");
+const { CartRouter } = require("./modules/cart/cart-handler");
+const { WishlistRouter } = require("./modules/wishlist/wishlist-handler");
 
+dotenv.config();
 var app = express();
 var PORT = process.env.PORT || 3002;
+app.use(
+  cors({
+    origin: "https://localhost:3000", // Replace with your frontend origin
+    credentials: true,
+  })
+);
 app.use(express.json());
-app.use(cors());
+app.use(cookieParser());
 
-app.post("/api/auth/signup", function (req, res) {
-  res.send("Signed up successfully");
-  console.log(req.body);
-});
-
-app.post("/api/auth/login", function (req, res) {
-  res.send("logged in successfully");
-});
+app.use("/api/product", ProductRouter);
+app.use("/api/auth", AuthRouter);
+app.use("/api/cart", CartRouter);
+app.use("/api/wishlist", WishlistRouter);
 
 app.listen(PORT, function (error) {
   if (!error) {
