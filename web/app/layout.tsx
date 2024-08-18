@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import { store } from "../redux/store";
 import ClientProvider from "./clientProvider";
 import Navbar from "./components/navbar";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,10 +28,12 @@ export default function RootLayout({
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <body className={inter.className}>
-            <ClientProvider>
-              <Navbar />
-              {children}
-            </ClientProvider>
+            <Suspense fallback={<div>Loading...</div>}>
+              <ClientProvider>
+                <Navbar />
+                {children}
+              </ClientProvider>
+            </Suspense>
           </body>
         </ThemeProvider>
       </AppRouterCacheProvider>

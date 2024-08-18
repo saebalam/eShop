@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { Grid, TextField, Button } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import { login } from "../../redux/authSlice";
@@ -35,48 +35,50 @@ const Login = () => {
     }
   };
   return (
-    <Grid>
-      <ErrorPopup />
-      <Grid className="flex !flex-col gap-4 w-1/3 items-center  m-auto mt-32">
-        <p className="text-2xl font-bold text-gray-600">Login</p>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Grid>
+        <ErrorPopup />
+        <Grid className="flex !flex-col gap-4 w-1/3 items-center  m-auto mt-32">
+          <p className="text-2xl font-bold text-gray-600">Login</p>
 
-        <TextField
-          fullWidth
-          id="email"
-          name="email"
-          label="Email"
-          type="email"
-          variant="outlined"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <TextField
-          fullWidth
-          id="password"
-          name="password"
-          label="Password"
-          type="password"
-          variant="outlined"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Grid>
-          <Button
-            variant="contained"
-            disabled={!email || !password}
-            onClick={handleLogin}
-          >
-            Login
-          </Button>
-          <p
-            className="text-blue-800 text-sm text-center mt-2 underline cursor-pointer"
-            onClick={() => {
-              router.push("/signup");
-            }}
-          >
-            Signup
-          </p>
+          <TextField
+            fullWidth
+            id="email"
+            name="email"
+            label="Email"
+            type="email"
+            variant="outlined"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <TextField
+            fullWidth
+            id="password"
+            name="password"
+            label="Password"
+            type="password"
+            variant="outlined"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Grid>
+            <Button
+              variant="contained"
+              disabled={!email || !password}
+              onClick={handleLogin}
+            >
+              Login
+            </Button>
+            <p
+              className="text-blue-800 text-sm text-center mt-2 underline cursor-pointer"
+              onClick={() => {
+                router.push("/signup");
+              }}
+            >
+              Signup
+            </p>
+          </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    </Suspense>
   );
 };
 
