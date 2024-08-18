@@ -4,6 +4,8 @@ import { Grid } from "@mui/material";
 import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { getCartApi } from "../../networking/products/getCartApi";
 
 interface Product {
   id: number;
@@ -18,18 +20,12 @@ interface Product {
 }
 
 const Cart = () => {
+  const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
   const [products, setProducts] = useState<Product[]>([]);
 
   const getCartProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:3002/api/getCart", {
-        headers: {
-          Authorization: "Bearer YOUR_TOKEN_HERE", // Replace with your token
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
-      console.log("ddd", response?.data);
+      const response = await getCartApi();
       setProducts(response?.data?.data);
     } catch (error) {
       console.log(error);
@@ -37,7 +33,10 @@ const Cart = () => {
   };
 
   useEffect(() => {
-    getCartProducts();
+    if (isLoggedIn) {
+      getCartProducts();
+    } else {
+    }
   }, []);
 
   return (

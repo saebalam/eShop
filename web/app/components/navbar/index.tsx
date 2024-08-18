@@ -7,28 +7,30 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { logout } from "@/redux/authSlice";
+import { logoutApi } from "@/networking/auth/logoutApi";
+import { getCartCountApi } from "../../../networking/products/getCartCountApi";
+import { incrementByAmount, setCartCount } from "@/redux/cartSlice";
 
-const Navbar = ({ cartCount }) => {
+const Navbar = ({  }) => {
   const router = useRouter();
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
+  const cartCount = useSelector((state: any) => state.cart.cartCount);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState<Boolean>(false);
+
+
+  console.log("logggg", isLoggedIn);
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://localhost:3002/api/auth/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-      const responseData = await response.json();
-
-      if (responseData) {
-        localStorage.removeItem("isLoggedIn");
-        router.refresh();
-      }
-    } catch (error) {}
+      await logoutApi();
+      dispatch(logout());
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleCartClick = () => {
@@ -39,38 +41,34 @@ const Navbar = ({ cartCount }) => {
     }
   };
 
-  // const getCartCount = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       "http://localhost:3002/api/cart/getCartCount",
-  //       {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         credentials: "include",
-  //       }
-  //     );
-  //     const responseData = await response.json();
-  //     console.log("111", responseData);
-  //     setCartCount(responseData?.count);
-  //   } catch (error) {}
-  // };
+  const getCartCount = async () => {
+    try {
+      const response = await getCartCountApi()
+      dispatch(setCartCount(response?.data?.count))
+      // const responseData = await response.json();
+      console.log("111", response);
+      // setCartCount(responseD?.count);
+    } catch (error) {}
+  };
 
   useEffect(() => {
     if (isLoggedIn) {
-      // getCartCount();
+      getCartCount();
     }
   }, [isLoggedIn]);
 
   return (
     <Grid className="bg-rose-100 flex justify-around gap-20 items-center p-4">
-      <Grid>eSHOP</Grid>
+      <Grid onClick={() => router.push("/")} className="cursor-pointer">
+        eSHOP
+      </Grid>
       <Grid className="flex gap-4">
-        <p>Home</p>
-        <p>Men</p>
-        <p>Women</p>
-        <p>Kids</p>
+        <p className="cursor-pointer" onClick={() => router.push("/")}>
+          Home
+        </p>
+        <p className="cursor-pointer">Men</p>
+        <p className="cursor-pointer">Women</p>
+        <p className="cursor-pointer">Kids</p>
       </Grid>
       <Grid className="flex gap-2">
         <FavoriteBorderIcon className="cursor-pointer" />
@@ -107,6 +105,7 @@ const Navbar = ({ cartCount }) => {
             )}
           </Grid>
         )}
+        {console.log("lll", isLoggedIn)}
         {!isLoggedIn && (
           <button className="ml-2" onClick={() => router.push("/login")}>
             Login

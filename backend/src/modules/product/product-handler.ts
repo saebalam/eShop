@@ -25,4 +25,4 @@ router.get("/getCart", authenticateToken, function (req, res) {
 
 router.post("/");
 
-module.exports = { ProductRouter: router };
+export { router as ProductRouter };

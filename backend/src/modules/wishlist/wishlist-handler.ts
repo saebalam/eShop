@@ -42,4 +42,4 @@ router.post("/removeFromWishlist", authenticateToken, function (req, res) {
   res.send({ msg: "item removed from wishlist successfully" });
 });
 
-module.exports = { WishlistRouter: router };
+export {router as WishlistRouter}

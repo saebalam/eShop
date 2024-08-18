@@ -4,6 +4,10 @@ import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import theme from "../theme";
+import { Provider } from "react-redux";
+import { store } from "../redux/store";
+import ClientProvider from "./clientProvider";
+import Navbar from "./components/navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +26,12 @@ export default function RootLayout({
       <AppRouterCacheProvider>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <body className={inter.className}>{children}</body>
+          <body className={inter.className}>
+            <ClientProvider>
+              <Navbar />
+              {children}
+            </ClientProvider>
+          </body>
         </ThemeProvider>
       </AppRouterCacheProvider>
     </html>

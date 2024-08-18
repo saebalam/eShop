@@ -1,23 +1,35 @@
-const express = require("express");
-const dotenv = require("dotenv");
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import { errorHandler } from "./middlewares/errorHandler";
+import { AuthRouter } from "./modules/auth/auth-handlers";
+import { ProductRouter } from "./modules/product/product-handler";
+import { json } from "body-parser";
+import { WishlistRouter } from "./modules/wishlist/wishlist-handler";
+import { CartRouter } from "./modules/cart/cart-handler";
+import express from "express";
 
-dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3002;
+dotenv.config({ path: "../.env" });
 
-app.post("/signup", (req, res) => {
-  res.send("Signed up successfully");
-  console.log(req.body);
-});
+app.use(
+  cors({
+    origin: "http://localhost:3002", // Replace with your frontend origin
+    credentials: true,
+  })
+);
+app.use(json());
+app.use(cookieParser());
 
-app.get("/login", (req, res) => {
-  res.send("login");
-});
+app.use("/api/auth", AuthRouter);
+app.use("/api/products", ProductRouter);
+app.use("/api/cart", CartRouter);
+app.use("/api/wishlist", WishlistRouter);
 
-app.listen(PORT, (error: any) => {
-  if (!error) {
-    console.log("App started successfully on port", PORT);
-  } else {
-    console.log(error);
-  }
+app.use(errorHandler);
+
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}!!!!!!!!`);
+  console.log("Database URL ", process.env.DATABASE_URL);
 });

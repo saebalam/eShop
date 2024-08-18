@@ -144,6 +144,28 @@ carts = [
         "imageUrl": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?q=80&w=2934&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         "rating": 4.5,
         "reviews": 120
+      },
+      {
+        "id": 11,
+        "name": "Wireless Mouse",
+        "description": "Ergonomic wireless mouse with adjustable DPI.",
+        "price": 25.99,
+        "category": "Electronics",
+        "stock": 50,
+        "imageUrl": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?q=80&w=2934&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "rating": 4.5,
+        "reviews": 120
+      },
+      {
+        "id": 11,
+        "name": "Wireless Mouse",
+        "description": "Ergonomic wireless mouse with adjustable DPI.",
+        "price": 25.99,
+        "category": "Electronics",
+        "stock": 50,
+        "imageUrl": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?q=80&w=2934&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "rating": 4.5,
+        "reviews": 120
       }
     ]
   }

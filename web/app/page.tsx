@@ -5,10 +5,13 @@ import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import HomePageBanner from "./components/homePageBanner";
 import Products from "./components/products";
+import { useSelector } from "react-redux";
+import { RootState, AppDispatch } from "../redux/store";
 
 export default function Home() {
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-  console.log("isLoggedIn", isLoggedIn);
+  const count = useSelector((state: RootState) => state.cart.cartCount);
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  console.log("ccc", count, isLoggedIn);
   const [cartCount, setCartCount] = useState();
 
   // const getAllProducts = async () => {
@@ -54,7 +57,7 @@ export default function Home() {
 
   return (
     <Grid>
-      <Navbar cartCount={cartCount} />
+      {/* <Navbar cartCount={cartCount} /> */}
       <HomePageBanner />
       <Products refreshCartCount={refreshCartCount} />
     </Grid>

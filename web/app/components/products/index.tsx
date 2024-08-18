@@ -3,6 +3,8 @@ import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import ProductCard from "./productCard";
+import { getAllProductsApi } from "@/networking/products/getAllProductsApi";
+import { getWishlistApi } from "@/networking/products/getWishlistApi";
 
 interface Product {
   id: number;
@@ -16,15 +18,15 @@ interface Product {
   reviews: number;
 }
 
-const Products = ({ refreshCartCount }) => {
+const Products: React.FC<{ refreshCartCount: any }> = ({
+  refreshCartCount,
+}) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [wishlist, setWishlist] = useState<Product[]>([]);
 
   const getAllProducts = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:3002/api/product/getAllProducts"
-      );
+      const response = await getAllProductsApi();
       setProducts(response?.data?.data);
     } catch (error) {
       console.log(error);
@@ -33,17 +35,7 @@ const Products = ({ refreshCartCount }) => {
 
   const getWishlist = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:3002/api/wishlist/getWishlist",
-        {
-          headers: {
-            Authorization: "Bearer YOUR_TOKEN_HERE", // Replace with your token
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
-      console.log("dd111", response?.data);
+      const response = await getWishlistApi();
       setWishlist(response?.data?.data);
     } catch (error) {
       console.log(error);

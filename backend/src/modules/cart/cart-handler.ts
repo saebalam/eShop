@@ -40,4 +40,4 @@ router.get("/getCartCount", authenticateToken, async function (req, res) {
   res.send({ count: count });
 });
 
-module.exports = { CartRouter: router };
+export { router as CartRouter };

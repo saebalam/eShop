@@ -6,7 +6,11 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-const WishlistButton = ({ product, wishlist, refreshWishlist }) => {
+const WishlistButton: React.FC<{
+  product: any;
+  wishlist: any;
+  refreshWishlist: any;
+}> = ({ product, wishlist, refreshWishlist }) => {
   const router = useRouter();
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [copyWishlist, setCopyWishlist] = useState([]);
@@ -48,7 +52,7 @@ const WishlistButton = ({ product, wishlist, refreshWishlist }) => {
   };
 
   useEffect(() => {
-    const isInWishlist = wishlist?.find((eachItem) => {
+    const isInWishlist = wishlist?.find((eachItem:any) => {
       console.log("bb1", eachItem, product.id);
       return eachItem.id == product.id;
     });

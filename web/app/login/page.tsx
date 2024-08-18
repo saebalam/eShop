@@ -3,41 +3,40 @@
 import React, { useState } from "react";
 import { Grid, TextField, Button } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
+import { login } from "../../redux/authSlice";
+import { useDispatch } from "react-redux";
+import { loginApi } from "../../networking/auth/loginApi";
+import { setError } from "../../redux/errorSlice";
+import ErrorPopup from "../components/error";
 
 const Login = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const redirectTo = searchParams.get("redirectTo");
 
   const handleLogin = async () => {
     try {
-      const response = await fetch("http://localhost:3002/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-        credentials: "include",
-      });
-      const responseData = await response.json();
-      const { loggedin, token } = responseData.data;
-      if (loggedin === 1) {
-        localStorage.setItem("isLoggedIn", "true");
-        if (redirectTo) {
-          router.push(redirectTo);
-        } else {
-          router.push("/");
-        }
+      const response = await loginApi({ email, password });
+
+      console.log("rrr", response);
+      dispatch(login());
+
+      if (redirectTo) {
+        router.push(redirectTo);
+      } else {
+        router.push("/");
       }
-    } catch (error) {}
+    } catch (error) {
+      // console.log("rrrr", error?.response?.data?.error?.message);
+      // dispatch(setError(error?.response?.data?.error?.message));
+    }
   };
   return (
     <Grid>
+      <ErrorPopup />
       <Grid className="flex !flex-col gap-4 w-1/3 items-center  m-auto mt-32">
         <p className="text-2xl font-bold text-gray-600">Login</p>
 
