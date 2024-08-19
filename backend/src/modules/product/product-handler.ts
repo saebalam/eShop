@@ -1,28 +1,28 @@
-const express = require("express");
-const productsData = require("../../../database/products");
-const { authenticateToken } = require("../../middlewares/authenticateToken");
+// const express = require("express");
+// const productsData = require("../../../database/products");
+// const { authenticateToken } = require("../../middlewares/authenticateToken");
 
-const router = express.Router();
+// const router = express.Router();
 
-router.get("/getAllProducts", function (req, res) {
-  res.send({
-    data: productsData.products,
-  });
-});
+// router.get("/getAllProducts", function (req, res) {
+//   res.send({
+//     data: productsData.products,
+//   });
+// });
 
-router.get("/getCart", authenticateToken, function (req, res) {
-  const { email } = req.user;
+// router.get("/getCart", authenticateToken, function (req, res) {
+//   const { email } = req.user;
 
-  const user = cartData?.cart?.find((obj) => {
-    return obj.email == email;
-  });
-  console.log(email, cartData);
+//   const user = cartData?.cart?.find((obj:any) => {
+//     return obj.email == email;
+//   });
+//   console.log(email, cartData);
 
-  res.send({
-    data: user?.products,
-  });
-});
+//   res.send({
+//     data: user?.products,
+//   });
+// });
 
-router.post("/");
+// router.post("/");
 
-export { router as ProductRouter };
+// export { router as ProductRouter };

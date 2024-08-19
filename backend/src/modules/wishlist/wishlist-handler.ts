@@ -12,12 +12,12 @@ const wishlistsFilePath = path.join(
   "../../../database/wishlists.js"
 );
 
-router.get("/getWishlist", authenticateToken, function (req, res) {
+router.get("/getWishlist", authenticateToken, function (req:any, res:any) {
   const { email } = req.user;
 
   const wishlists = readWishlistsFromFile({ wishlistsFilePath });
 
-  const wishlist = wishlists?.find((obj) => {
+  const wishlist = wishlists?.find((obj:any) => {
     return obj.email == email;
   });
 
@@ -26,7 +26,7 @@ router.get("/getWishlist", authenticateToken, function (req, res) {
   });
 });
 
-router.post("/addToWishlist", authenticateToken, function (req, res) {
+router.post("/addToWishlist", authenticateToken, function (req:any, res:any) {
   const { email } = req.user;
 
   let newProduct = req.body;
@@ -34,7 +34,7 @@ router.post("/addToWishlist", authenticateToken, function (req, res) {
   res.send({ msg: "item added to wishlist successfully" });
 });
 
-router.post("/removeFromWishlist", authenticateToken, function (req, res) {
+router.post("/removeFromWishlist", authenticateToken, function (req:any, res:any) {
   const { email } = req.user;
 
   let toDelete = req.body;
